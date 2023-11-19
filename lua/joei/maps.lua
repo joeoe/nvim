@@ -9,5 +9,6 @@ vim.keymap.set("n", "<leader>wq", "<cmd>wq<cr>")
 vim.keymap.set("n", "<leader>ww", "<cmd>w<cr>")
 vim.keymap.set("n", "<leader>/", "<cmd>noh<cr>")
 
-vim.keymap.set("n", "<leader>rc", "<cmd>edit $MYVIMRC<cr><cmd>cd %:p:h<cr><cmd>Neotree reveal<cr>")
+vim.keymap.set("n", "<leader>rc", "<cmd>vsp $MYVIMRC<cr><cmd>cd %:p:h<cr>")
+vim.keymap.set("n", "<leader>rh", "<cmd>edit $MYVIMRC<cr><cmd>cd %:p:h<cr>")
 vim.keymap.set("n", "<leader>rr", "<cmd>so $MYVIMRC<cr>")

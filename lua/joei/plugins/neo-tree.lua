@@ -284,5 +284,7 @@ return {
 		})
 
 		vim.keymap.set("n", "<leader>ee", ":Neotree toggle<cr>")
+		vim.keymap.set("n", "<leader>eb", ":Neotree toggle show buffers right<cr>")
+		vim.keymap.set("n", "<leader>eg", ":Neotree float git_status<cr>")
 	end,
 }
