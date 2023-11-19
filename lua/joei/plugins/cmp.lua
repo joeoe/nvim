@@ -9,7 +9,10 @@ return {
 		"hrsh7th/cmp-cmdline",
 		"hrsh7th/cmp-omni",
 		"hrsh7th/cmp-emoji",
+		"hrsh7th/cmp-nvim-lsp-signature-help",
 		"onsails/lspkind-nvim",
+		"L3MON4D3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
 	},
 	config = function()
 		local cmp = require("cmp")
@@ -26,14 +29,19 @@ return {
 				{ name = "nvim_lsp" },
 				{ name = "buffer" },
 				{ name = "path" },
+				{ name = "nvim_lsp_signature_help" },
 			}),
+			snippet = {
+				expand = function(args)
+					require("luasnip").lsp_expand(args.body)
+				end,
+			},
 		})
 
 		-- Set configuration for specific filetype.
 		cmp.setup.filetype("gitcommit", {
 			sources = cmp.config.sources({
 				{ name = "git" }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
-			}, {
 				{ name = "buffer" },
 			}),
 		})
@@ -51,16 +59,8 @@ return {
 			mapping = cmp.mapping.preset.cmdline(),
 			sources = cmp.config.sources({
 				{ name = "path" },
-			}, {
 				{ name = "cmdline" },
 			}),
 		})
-
-		-- -- Set up lspconfig.
-		-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
-		-- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-		-- require("lspconfig")["<YOUR_LSP_SERVER>"].setup({
-		-- 	capabilities = capabilities,
-		-- })
 	end,
 }

@@ -1,5 +1,6 @@
 return {
 	"tpope/vim-repeat",
+	"tpope/vim-fugitive",
 	"mfussenegger/nvim-dap",
 	-- {
 	-- 	"lukas-reineke/indent-blankline.nvim",

@@ -2,16 +2,54 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
+		"williamboman/mason.nvim",
+		"williamboman/mason-lspconfig.nvim",
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 	},
 	config = function()
-		-- Setup language servers.
 		local lspconfig = require("lspconfig")
-		lspconfig.rust_analyzer.setup({
-			-- Server-specific settings. See `:help lspconfig-setup`
-			settings = {
-				["rust-analyzer"] = {},
+		local mason = require("mason")
+		local mason_lspconfig = require("mason-lspconfig")
+		local mason_tool_installer = require("mason-tool-installer")
+		local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+		capabilities.textDocument.completion.completionItem.snippetSupport = true
+		capabilities.textDocument.foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		}
+		vim.diagnostic.config({
+			virtual_text = false,
+		})
+
+		mason.setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		})
+
+		mason_lspconfig.setup({
+			ensure_installed = {
+				"tsserver",
+				"html",
+				-- "cssls",
+				-- "tailwindcss",
+				"lua_ls",
+				"rust_analyzer",
+			},
+			automatic_installation = true, -- not the same as ensure_installed
+		})
+
+		mason_tool_installer.setup({
+			ensure_installed = {
+				"prettier", -- prettier formatter
+				"stylua", -- lua formatter
+				"eslint_d", -- js linter
 			},
 		})
 
@@ -54,43 +92,78 @@ return {
 			end,
 		})
 
-		lspconfig.lua_ls.setup({
-			on_init = function(client)
-				local path = client.workspace_folders[1].name
-				if not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. "/.luarc.jsonc") then
-					client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-						Lua = {
-							runtime = {
-								-- Tell the language server which version of Lua you're using
-								-- (most likely LuaJIT in the case of Neovim)
-								version = "LuaJIT",
-							},
-							-- Make the server aware of Neovim runtime files
-							workspace = {
-								checkThirdParty = false,
-								library = {
-									vim.env.VIMRUNTIME,
-									-- "${3rd}/luv/library"
-									-- "${3rd}/busted/library",
+		mason_lspconfig.setup_handlers({
+			-- The first entry (without a key) will be the default handler
+			-- and will be called for each installed server that doesn't have
+			-- a dedicated handler.
+			function(server_name) -- default handler (optional)
+				lspconfig[server_name].setup({
+					capabilities,
+				})
+			end,
+
+			["lua_ls"] = function()
+				lspconfig.lua_ls.setup({
+					capabilities,
+					on_init = function(client)
+						local path = client.workspace_folders[1].name
+						if
+							not vim.loop.fs_stat(path .. "/.luarc.json")
+							and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
+						then
+							client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
+								Lua = {
+									runtime = {
+										-- Tell the language server which version of Lua you're using
+										-- (most likely LuaJIT in the case of Neovim)
+										version = "LuaJIT",
+									},
+									-- Make the server aware of Neovim runtime files
+									workspace = {
+										checkThirdParty = false,
+										library = {
+											vim.env.VIMRUNTIME,
+											-- "${3rd}/luv/library"
+											-- "${3rd}/busted/library",
+										},
+										-- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+										-- library = vim.api.nvim_get_runtime_file("", true)
+									},
 								},
-								-- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-								-- library = vim.api.nvim_get_runtime_file("", true)
+							})
+
+							client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+						end
+						return true
+					end,
+				})
+			end,
+
+			["rust_analyzer"] = function()
+				lspconfig.rust_analyzer.setup({
+					capabilities,
+					settings = {
+						["rust-analyzer"] = {
+							assist = {
+								importMergeBehavior = "last",
+								importPrefix = "by_self",
+							},
+							diagnostics = {
+								disabled = { "unresolved-import" },
+							},
+							cargo = {
+								loadOutDirsFromCheck = true,
+							},
+							procMacro = {
+								enable = true,
+							},
+							checkOnSave = {
+								command = "clippy",
 							},
 						},
-					})
-
-					client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-				end
-				return true
+					},
+				})
 			end,
 		})
-		--lspconfig.pyright.setup {}
-		--lspconfig.tsserver.setup {}
-		--lspconfig.rust_analyzer.setup {
-		-- Server-specific settings. See `:help lspconfig-setup`
-		--  settings = {
-		--    ['rust-analyzer'] = {},
-		--  },
-		--}
 	end,
 }
