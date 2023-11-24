@@ -25,15 +25,15 @@ return {
 
 		telescope.load_extension("fzf")
 
-		vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-		vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
-		vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
-		vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
-		vim.keymap.set("n", "<leader>fr", builtin.command_history, {})
-		vim.keymap.set("n", "<leader>f/", builtin.search_history, {})
-		vim.keymap.set("n", "<leader>fm", builtin.man_pages, {})
-		vim.keymap.set("n", "<leader>fq", builtin.quickfix, {})
-		vim.keymap.set("n", "<leader>ft", builtin.treesitter, {})
+		vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Files" })
+		vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "File history" })
+		vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Grep" })
+		vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Buffers" })
+		vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help tags" })
+		vim.keymap.set("n", "<leader>fr", builtin.command_history, { desc = "Command history" })
+		vim.keymap.set("n", "<leader>f/", builtin.search_history, { desc = "Search history" })
+		vim.keymap.set("n", "<leader>fm", builtin.man_pages, { desc = "Man pages" })
+		vim.keymap.set("n", "<leader>fq", builtin.quickfix, { desc = "Quickfix" })
+		vim.keymap.set("n", "<leader>ft", builtin.treesitter, { desc = "Treesitter" })
 	end,
 }
