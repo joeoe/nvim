@@ -22,9 +22,7 @@ lazy.setup({
 	{ import = "joei.plugins" },
 	{ import = "joei.plugins.lsp" },
 }, {
-	install = {
-		colorscheme = { "catppuccin" },
-	},
+	install = { colorscheme = { "catppuccin" } },
 	checker = {
 		enabled = true,
 		notify = false,

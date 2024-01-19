@@ -10,6 +10,7 @@ return {
 		"hrsh7th/cmp-omni",
 		"hrsh7th/cmp-emoji",
 		"hrsh7th/cmp-nvim-lsp-signature-help",
+		"petertriho/cmp-git",
 		"onsails/lspkind-nvim",
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
@@ -41,7 +42,7 @@ return {
 		-- Set configuration for specific filetype.
 		cmp.setup.filetype("gitcommit", {
 			sources = cmp.config.sources({
-				{ name = "git" }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+				{ name = "git" },
 				{ name = "buffer" },
 			}),
 		})
