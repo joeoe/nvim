@@ -28,6 +28,13 @@ return {
 	"tpope/vim-obsession",
 	"tpope/vim-unimpaired",
 	"tpope/vim-repeat",
+	{
+		"kylechui/nvim-surround",
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup()
+		end,
+	},
 	"qpkorr/vim-bufkill",
 	{
 		"stevearc/oil.nvim",
