@@ -6,13 +6,20 @@ return {
 		local bufferline = require("bufferline")
 
 		vim.opt.termguicolors = true
-		bufferline.setup()
+		bufferline.setup({
+			options = {
+				-- style_preset = bufferline.style_preset.minimal,
+				-- separator_style = "slope",
+				-- indicator = {
+				-- 	style = "underline",
+				-- },
+				hover = {
+					enabled = true,
+					delay = 100,
+					reveal = { "close" },
+				},
+			},
+			highlights = require("catppuccin.groups.integrations.bufferline").get(),
+		})
 	end,
-	options = {
-		hover = {
-			enabled = true,
-			delay = 100,
-			reveal = { "close" },
-		},
-	},
 }
