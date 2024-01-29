@@ -24,10 +24,14 @@ return {
 		end,
 	},
 	{ "rose-pine/neovim", name = "rose-pine" },
+
 	"tpope/vim-fugitive",
 	"tpope/vim-obsession",
 	"tpope/vim-unimpaired",
 	"tpope/vim-repeat",
+
+	-- TEXT OBJECTS & MANIPULATION
+	"wellle/targets.vim",
 	{
 		"kylechui/nvim-surround",
 		event = "VeryLazy",
@@ -35,24 +39,33 @@ return {
 			require("nvim-surround").setup()
 		end,
 	},
+	{
+		"ggandor/leap.nvim",
+		config = function()
+			local leap = require("leap")
+			leap.add_default_mappings()
+			leap.add_repeat_mappings(";", ",")
+		end,
+	},
+
 	"qpkorr/vim-bufkill",
 	{
 		"stevearc/oil.nvim",
 		opts = {},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
-	-- {
-	-- 	"stevearc/dressing.nvim",
-	-- 	event = "VeryLazy",
-	-- },
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		opts = {},
 	},
 	{
 		"numToStr/Comment.nvim",
 		event = { "BufReadPre", "BufNewFile" },
+		config = true,
+	},
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
 		config = true,
 	},
 	{
@@ -61,16 +74,32 @@ return {
 			require("gitsigns").setup()
 		end,
 	},
+
+	-- LANGUAGE SPECIFICS
 	{
-		"ggandor/leap.nvim",
-		config = function()
-			require("leap").add_default_mappings()
-		end,
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		after = "nvim-treesitter",
+		requires = "nvim-treesitter/nvim-treesitter",
 	},
 	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {},
 	},
 	-- "luckasRanarison/tree-sitter-hypr",
 	"elkowar/yuck.vim",
+	"sindrets/diffview.nvim",
+	{ -- better quickfix
+		"kevinhwang91/nvim-bqf",
+		ft = "qf",
+	},
+
+	-- UI
+	{
+		"stevearc/dressing.nvim",
+		event = "VeryLazy",
+	},
+
 	{
 		"brenoprata10/nvim-highlight-colors",
 		config = function()
@@ -93,12 +122,6 @@ return {
 	},
 
 	"rcarriga/nvim-notify",
-	"sindrets/diffview.nvim",
-
-	{
-		"kevinhwang91/nvim-bqf",
-		ft = "qf",
-	},
 
 	-- Requires more reading
 	-- {
