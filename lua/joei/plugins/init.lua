@@ -14,6 +14,9 @@ return {
 					mason = true,
 					lsp_trouble = true,
 					which_key = true,
+					harpoon = true,
+					neotree = true,
+					notify = true,
 				},
 				compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
 			})
