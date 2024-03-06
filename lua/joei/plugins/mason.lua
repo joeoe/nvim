@@ -1,162 +1,164 @@
 return {
-	"williamboman/mason.nvim",
-	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		"jay-babu/mason-nvim-dap.nvim",
-	},
-	config = function()
-		local mason = require("mason")
-		local mason_lspconfig = require("mason-lspconfig")
-		local mason_tool_installer = require("mason-tool-installer")
-		local mason_dap = require("mason-nvim-dap")
+  'williamboman/mason.nvim',
+  dependencies = {
+    'williamboman/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    'jay-babu/mason-nvim-dap.nvim',
+  },
+  config = function()
+    require('mason').setup {
+      ui = {
+        icons = {
+          package_installed = '✓',
+          package_pending = '➜',
+          package_uninstalled = '✗',
+        },
+      },
+    }
 
-		mason.setup({
-			ui = {
-				icons = {
-					package_installed = "✓",
-					package_pending = "➜",
-					package_uninstalled = "✗",
-				},
-			},
-		})
+    local mason_lspconfig = require 'mason-lspconfig'
+    mason_lspconfig.setup {
+      ensure_installed = {
+        -- "tsserver",
+        'html',
+        'cssls',
+        -- "tailwindcss",
+        'lua_ls',
+        'rust_analyzer',
+      },
+      automatic_installation = true, -- not the same as ensure_installed
+    }
 
-		mason_lspconfig.setup({
-			ensure_installed = {
-				"tsserver",
-				"html",
-				"cssls",
-				"tailwindcss",
-				"lua_ls",
-				"rust_analyzer",
-			},
-			automatic_installation = true, -- not the same as ensure_installed
-		})
+    require('mason-tool-installer').setup {
+      ensure_installed = {
+        'prettier', -- prettier formatter
+        'stylua', -- lua formatter
+        'eslint_d', -- js linter
+      },
+    }
 
-		mason_tool_installer.setup({
-			ensure_installed = {
-				"prettier", -- prettier formatter
-				"stylua", -- lua formatter
-				"eslint_d", -- js linter
-			},
-		})
+    require('mason-nvim-dap').setup {
+      ensure_installed = {},
+      handlers = {
+        function(config)
+          -- all sources with no handler get passed here
+          -- Keep original functionality
+          require('mason-nvim-dap').default_setup(config)
+        end,
+      },
+      automatic_installation = true,
+    }
 
-		mason_dap.setup({
-			ensure_installed = {},
-			handlers = {
-				function(config)
-					-- all sources with no handler get passed here
-					-- Keep original functionality
-					require("mason-nvim-dap").default_setup(config)
-				end,
-			},
-		})
+    local lspconfig = require 'lspconfig'
+    local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    -- capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
 
-		local lspconfig = require("lspconfig")
-		local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-		-- capabilities.textDocument.completion.completionItem.snippetSupport = true
-		capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+    mason_lspconfig.setup_handlers {
+      -- default handler
+      function(server_name)
+        lspconfig[server_name].setup {
+          capabilities,
+        }
+      end,
 
-		mason_lspconfig.setup_handlers({
-			-- default handler
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities,
-				})
-			end,
+      ['lua_ls'] = function()
+        lspconfig.lua_ls.setup {
+          capabilities,
+          settings = {
+            Lua = {
+              runtime = { version = 'LuaJIT' },
+              workspace = {
+                checkThirdParty = false,
+                -- Tells lua_ls where to find all the Lua files that you have loaded
+                -- for your neovim configuration.
+                library = {
+                  '${3rd}/luv/library',
+                  unpack(vim.api.nvim_get_runtime_file('', true)),
+                },
+                -- If lua_ls is really slow on your computer, you can try this instead:
+                -- library = { vim.env.VIMRUNTIME },
+              },
+              completion = {
+                callSnippet = 'Replace',
+              },
+              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+              -- diagnostics = { disable = { 'missing-fields' } },
+            },
+          },
+        }
+      end,
 
-			["lua_ls"] = function()
-				lspconfig.lua_ls.setup({
-					capabilities,
-					on_init = function(client)
-						local path = client.workspace_folders[1].name
-						if
-							not vim.loop.fs_stat(path .. "/.luarc.json")
-							and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
-						then
-							client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-								Lua = {
-									runtime = {
-										version = "LuaJIT",
-									},
-									workspace = {
-										checkThirdParty = false,
-										library = {
-											vim.env.VIMRUNTIME,
-										},
-									},
-									diagnostics = {
-										globals = {
-											"vim",
-										},
-									},
-								},
-							})
+      ['rust_analyzer'] = function()
+        lspconfig.rust_analyzer.setup {
+          capabilities,
+          cmd = {
+            'rustup',
+            'run',
+            'stable',
+            'rust-analyzer',
+          },
+          settings = {
+            ['rust-analyzer'] = {
+              assist = {
+                importMergeBehavior = 'last',
+                importPrefix = 'by_self',
+              },
+              diagnostics = {
+                disabled = { 'unresolved-import' },
+              },
+              cargo = {
+                loadOutDirsFromCheck = true,
+              },
+              procMacro = {
+                enable = true,
+              },
+              checkOnSave = {
+                command = 'clippy',
+              },
+            },
+          },
+        }
+      end,
 
-							client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-						end
-						return true
-					end,
-				})
-			end,
+      ['tsserver'] = function()
+        lspconfig.tsserver.setup {
+          capabilities,
+          init_options = {
+            preferences = {
+              diagnosticOptions = {
+                enable = true,
+                exclude = { '**/node_modules/**' },
+              },
+            },
+          },
+        }
+      end,
 
-			["rust_analyzer"] = function()
-				lspconfig.rust_analyzer.setup({
-					capabilities,
-					settings = {
-						["rust-analyzer"] = {
-							assist = {
-								importMergeBehavior = "last",
-								importPrefix = "by_self",
-							},
-							diagnostics = {
-								disabled = { "unresolved-import" },
-							},
-							cargo = {
-								loadOutDirsFromCheck = true,
-							},
-							procMacro = {
-								enable = true,
-							},
-							checkOnSave = {
-								command = "clippy",
-							},
-						},
-					},
-				})
-			end,
+      ['clangd'] = function()
+        lspconfig.clangd.setup {
+          capabilities,
+          cmd = {
+            'clangd',
+            -- "--log=verbose",
+          },
+        }
+      end,
 
-			["tsserver"] = function()
-				lspconfig.tsserver.setup({
-					capabilities,
-					init_options = {
-						preferences = {
-							diagnosticOptions = {
-								enable = true,
-								exclude = { "**/node_modules/**" },
-							},
-						},
-					},
-				})
-			end,
+      ['jsonls'] = function()
+        local cap = capabilities
+        cap.textDocument.completion.completionItem.snippetSupport = true
+        lspconfig.jsonls.setup {
+          cap,
+        }
+      end,
 
-			["clangd"] = function()
-				lspconfig.clangd.setup({
-					capabilities,
-					cmd = {
-						"clangd",
-						-- "--log=verbose",
-					},
-				})
-			end,
-
-			["jsonls"] = function()
-				local capabilities = capabilities
-				capabilities.textDocument.completion.completionItem.snippetSupport = true
-				lspconfig.jsonls.setup({
-					capabilities,
-				})
-			end,
-		})
-	end,
+      ['volar'] = function()
+        lspconfig.volar.setup {
+          capabilities,
+          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
+        }
+      end,
+    }
+  end,
 }
