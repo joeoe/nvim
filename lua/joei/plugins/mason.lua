@@ -50,21 +50,32 @@ return {
     }
 
     local lspconfig = require 'lspconfig'
+
     local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
     -- capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+
+    local border = 'single'
+    -- single, double, rounded, solid, shadow
+
+    local handlers = {
+      -- ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+      -- ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+    }
 
     mason_lspconfig.setup_handlers {
       -- default handler
       function(server_name)
         lspconfig[server_name].setup {
-          capabilities,
+          capabilities = capabilities,
+          handlers = handlers,
         }
       end,
 
       ['lua_ls'] = function()
         lspconfig.lua_ls.setup {
-          capabilities,
+          capabilities = capabilities,
+          handlers = handlers,
           settings = {
             Lua = {
               runtime = { version = 'LuaJIT' },
@@ -91,7 +102,8 @@ return {
 
       ['rust_analyzer'] = function()
         lspconfig.rust_analyzer.setup {
-          capabilities,
+          capabilities = capabilities,
+          handlers = handlers,
           cmd = {
             'rustup',
             'run',
@@ -123,8 +135,16 @@ return {
 
       ['tsserver'] = function()
         lspconfig.tsserver.setup {
-          capabilities,
+          capabilities = capabilities,
+          handlers = handlers,
           init_options = {
+            plugins = {
+              {
+                name = '@vue/typescript-plugin',
+                location = 'any/path',
+                languages = { 'javascript', 'typescript', 'vue' },
+              },
+            },
             preferences = {
               diagnosticOptions = {
                 enable = true,
@@ -132,12 +152,24 @@ return {
               },
             },
           },
+          filetypes = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx', 'vue' },
+          -- root_dir = require('lspconfig.util').root_pattern('.git', 'tsconfig.json', 'package.json', 'jsconfig.json'),
+        }
+      end,
+
+      ['volar'] = function()
+        lspconfig.volar.setup {
+          capabilities = capabilities,
+          handlers = handlers,
+          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
+          -- root_dir = require('lspconfig.util').root_pattern('.git', 'package.json'),
         }
       end,
 
       ['clangd'] = function()
         lspconfig.clangd.setup {
-          capabilities,
+          capabilities = capabilities,
+          handlers = handlers,
           cmd = {
             'clangd',
             -- "--log=verbose",
@@ -149,14 +181,8 @@ return {
         local cap = capabilities
         cap.textDocument.completion.completionItem.snippetSupport = true
         lspconfig.jsonls.setup {
-          cap,
-        }
-      end,
-
-      ['volar'] = function()
-        lspconfig.volar.setup {
-          capabilities,
-          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
+          capabilities = cap,
+          handlers = handlers,
         }
       end,
     }
