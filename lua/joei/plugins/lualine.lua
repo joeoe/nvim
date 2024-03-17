@@ -12,13 +12,13 @@ return {
           statusline = {},
           winbar = {},
         },
-        ignore_focus = {},
+        ignore_focus = { 'neo-tree', 'qf' },
         always_divide_middle = true,
         globalstatus = false,
         refresh = {
-          statusline = 1000,
-          tabline = 1000,
-          winbar = 1000,
+          statusline = 400,
+          tabline = 400,
+          winbar = 400,
         },
       },
       sections = {
