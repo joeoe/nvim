@@ -14,8 +14,8 @@ km.set('n', '<leader>ww', '<cmd>w<cr>', { desc = 'Write' })
 km.set('n', '<leader>/', '<cmd>noh<cr>', { desc = 'Clear highlights' })
 km.set('n', '<esc>', '<cmd>noh<cr>', { desc = 'Clear highlights' })
 
-km.set('n', '<leader>rc', '<cmd>vsp $MYVIMRC<cr><cmd>cd %:p:h<cr>', { desc = 'Vsplit vimrc' })
-km.set('n', '<leader>rh', '<cmd>edit $MYVIMRC<cr><cmd>cd %:p:h<cr>', { desc = 'Edit vimrc' })
+km.set('n', '<leader>rc', '<cmd>vsp $MYVIMRC<cr><cmd>lcd %:p:h<cr>', { desc = 'Vsplit vimrc' })
+km.set('n', '<leader>rh', '<cmd>edit $MYVIMRC<cr><cmd>lcd %:p:h<cr>', { desc = 'Edit vimrc' })
 km.set('n', '<leader>rr', '<cmd>so $MYVIMRC<cr>', { desc = 'Reload vimrc' })
 
 km.set('n', '<leader>bo', '<cmd>%bd|e#|bd#<cr>', { desc = 'Delete ALL buffers except current one' })

@@ -1,4 +1,5 @@
 return {
+  enabled = false,
   'j-morano/buffer_manager.nvim',
   config = function()
     local opts = { noremap = true }
