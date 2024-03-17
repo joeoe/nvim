@@ -67,11 +67,6 @@ return {
 
   'qpkorr/vim-bufkill',
   {
-    'stevearc/oil.nvim',
-    opts = {},
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-  },
-  {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
     opts = {}, -- this is equalent to setup({}) function
@@ -86,25 +81,41 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = true,
   },
-  {
-    'lewis6991/gitsigns.nvim',
-    opts = {},
-  },
 
-  -- LANGUAGE SPECIFICS
+  -- ╭──────────╮
+  -- │ Polyglot │
+  -- ╰──────────╯
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     after = 'nvim-treesitter',
     requires = 'nvim-treesitter/nvim-treesitter',
   },
-  {
+  { -- incompatible with volar 2.x
+    enabled = false,
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
+    config = function()
+      require('typescript-tools').setup {
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'typescript',
+          'typescriptreact',
+          'vue',
+        },
+        settings = {
+          tsserver_plugins = {
+            '@vue/typescript-plugin',
+            location = 'any/path',
+            languages = { 'javascript', 'typescript', 'vue' },
+          },
+        },
+      }
+    end,
   },
+
   -- "luckasRanarison/tree-sitter-hypr",
   'elkowar/yuck.vim',
-  'sindrets/diffview.nvim',
   { -- better quickfix
     'kevinhwang91/nvim-bqf',
     ft = 'qf',
