@@ -5,6 +5,7 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    'nvim-telescope/telescope-ui-select.nvim',
     'MunifTanjim/nui.nvim',
   },
   config = function()
@@ -16,21 +17,26 @@ return {
     local TSLayout = require 'telescope.pickers.layout'
 
     telescope.load_extension 'fzf'
+    telescope.load_extension 'ui-select'
 
-    vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Files' })
-    vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = 'File history' })
-    vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Grep' })
-    vim.keymap.set('n', '<leader>fG', function()
+    vim.keymap.set('n', '<leader>tf', builtin.find_files, { desc = '[T]elescope [F]iles' })
+    vim.keymap.set('n', '<leader>to', builtin.oldfiles, { desc = '[T]elescope File history' })
+    vim.keymap.set('n', '<leader>tg', builtin.live_grep, { desc = '[T]elescope [G]rep' })
+    vim.keymap.set('n', '<leader>tG', function()
       builtin.live_grep { search_dirs = { '%:p:h' } }
     end, { desc = 'Grep in current directory' })
-    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Buffers' })
-    vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
-    vim.keymap.set('n', '<leader>fr', builtin.command_history, { desc = 'Command history' })
-    vim.keymap.set('n', '<leader>f/', builtin.search_history, { desc = 'Search history' })
-    vim.keymap.set('n', '<leader>fm', builtin.man_pages, { desc = 'Man pages' })
-    vim.keymap.set('n', '<leader>fq', builtin.quickfix, { desc = 'Quickfix' })
-    vim.keymap.set('n', '<leader>ft', builtin.treesitter, { desc = 'Treesitter' })
-    vim.keymap.set('n', '<leader>:', builtin.commands, { desc = 'Commands' })
+    vim.keymap.set('n', '<leader>tb', builtin.buffers, { desc = '[T]elescope [Buffers' })
+    vim.keymap.set('n', '<leader>th', builtin.help_tags, { desc = '[T]elescope [Help tags' })
+    vim.keymap.set('n', '<leader>tr', builtin.command_history, { desc = '[T]elescope [Command history' })
+    vim.keymap.set('n', '<leader>t/', builtin.search_history, { desc = '[T]elescope Search history' })
+    vim.keymap.set('n', '<leader>tm', builtin.man_pages, { desc = '[T]elescope [M]an pages' })
+    vim.keymap.set('n', '<leader>tq', builtin.quickfix, { desc = '[T]elescope [Q]uickfix' })
+    vim.keymap.set('n', '<leader>tt', builtin.treesitter, { desc = '[T]elescope [T]reesitter' })
+    vim.keymap.set('n', '<leader>tk', builtin.treesitter, { desc = '[T]elescope [K]eymaps' })
+    vim.keymap.set('n', '<leader>td', builtin.treesitter, { desc = '[T]elescope [D]iagnostics' })
+    vim.keymap.set('n', '<leader>ts', builtin.treesitter, { desc = '[T]elescope [S]elect telescope' })
+    vim.keymap.set('n', '<leader>tw', builtin.treesitter, { desc = '[T]elescope Grep [W]ord under cursor' })
+    vim.keymap.set('n', '<leader>:', builtin.commands, { desc = '[T]elescope Commands' })
 
     local function make_popup(options)
       local popup = Popup(options)
@@ -45,11 +51,18 @@ return {
         mappings = {
           i = {
             -- Skip normal mode in telescope
-            -- ["<esc>"] = actions.close,
+            ['<esc>'] = actions.close,
+            -- ['<C-j>'] = actions.move_selection_next,
+            -- ['<C-k>'] = actions.move_selection_previous,
+            ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
             ['<C-s>'] = actions.cycle_previewers_next,
             ['<C-a>'] = actions.cycle_previewers_prev,
             ['<C-Down>'] = actions.cycle_history_next,
             ['<C-Up>'] = actions.cycle_history_prev,
+          },
+          n = {
+            ['<C-s>'] = actions.cycle_previewers_next,
+            ['<C-a>'] = actions.cycle_previewers_prev,
           },
         },
 
@@ -257,6 +270,11 @@ return {
 
           return TSLayout(layout)
         end,
+      },
+      extensions = {
+        ['ui-select'] = {
+          require('telescope.themes').get_dropdown(),
+        },
       },
     }
   end,
