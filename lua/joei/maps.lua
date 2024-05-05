@@ -38,4 +38,11 @@ km.set('n', '<leader>X', function()
 end, { desc = 'Write -> execute' })
 
 -- Terminal
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+km.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+km.set('n', '<leader>gg', ':Neogit kind=auto<cr>', { desc = 'Neogit in Split' })
+km.set('n', '<leader>G', ':Neogit kind=tab<cr>', { desc = 'Neogit in float' })
+
+km.set('n', '<leader>j', function()
+  require('jot').toggle()
+end, { desc = 'Open Jot split', noremap = true, silent = true })
