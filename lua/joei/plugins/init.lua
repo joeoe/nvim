@@ -69,6 +69,7 @@ return {
   },
 
   'qpkorr/vim-bufkill',
+
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
@@ -88,11 +89,6 @@ return {
   -- ╭──────────╮
   -- │ Polyglot │
   -- ╰──────────╯
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    after = 'nvim-treesitter',
-    requires = 'nvim-treesitter/nvim-treesitter',
-  },
   { -- incompatible with volar 2.x
     enabled = false,
     'pmizio/typescript-tools.nvim',
@@ -122,6 +118,17 @@ return {
   { -- better quickfix
     'kevinhwang91/nvim-bqf',
     ft = 'qf',
+  },
+  {
+    'ellisonleao/glow.nvim',
+    config = function()
+      require('glow').setup {
+        border = 'solid',
+        width_ratio = 0.8,
+        height_ratio = 0.8,
+      }
+    end,
+    cmd = 'Glow',
   },
 
   -- UI
