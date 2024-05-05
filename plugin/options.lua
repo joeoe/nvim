@@ -3,7 +3,6 @@ local opt = vim.opt
 opt.hidden = true
 opt.swapfile = false
 opt.undofile = true
-opt.undodir = vim.fn.stdpath 'data' .. '/undo'
 
 opt.foldmethod = 'expr'
 opt.foldexpr = 'nvim_treesitter#foldexpr()'
