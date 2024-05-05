@@ -131,10 +131,13 @@ return {
     cmd = 'Glow',
   },
 
-  -- UI
+  -- ╭────╮
+  -- │ UI │
+  -- ╰────╯
   {
     'stevearc/dressing.nvim',
     event = 'VeryLazy',
+    opts = {},
   },
 
   {
@@ -154,6 +157,10 @@ return {
         },
       }
     end,
+  },
+  {
+    'letieu/jot.lua',
+    dependencies = { 'nvim-lua/plenary.nvim' },
   },
 
   'rcarriga/nvim-notify',
