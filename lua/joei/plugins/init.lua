@@ -175,11 +175,11 @@ return {
       -- km.set('n', '<M-up>', '<cmd>KittyNavigatePrevious<cr>')
     end,
   },
+  'ActivityWatch/aw-watcher-vim',
 
   -- Requires more readin:
   -- {
   -- 	"stevearc/overseer.nvim",
-  -- 	opts = {},
   -- 	config = function()
   -- 		require("overseer").setup({
   -- 			templates = { "builtin", "user.run_script", "user.cpp_build" },
@@ -189,8 +189,6 @@ return {
 
   -- {
   -- 	"lukas-reineke/indent-blankline.nvim",
-  -- 	config = function()
-  -- 		require("ibl").setup()
-  -- 	end,
+  -- 	opts = {}
   -- },
 }
