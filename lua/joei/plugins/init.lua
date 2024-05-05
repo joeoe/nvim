@@ -50,13 +50,16 @@ return {
     config = true,
   },
 
-  -- TEXT OBJECTS & MANIPULATION
-  'wellle/targets.vim',
+  -- ╭─────────────────────────────╮
+  -- │ Text Objects & Manipulation │
+  -- ╰─────────────────────────────╯
+  -- 'wellle/targets.vim',
   {
     'kylechui/nvim-surround',
     event = 'VeryLazy',
     opts = {},
   },
+
   {
     'ggandor/leap.nvim',
     config = function()
