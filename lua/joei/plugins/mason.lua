@@ -191,6 +191,13 @@ return {
           handlers = handlers,
         }
       end,
+
+      ['gopls'] = function()
+        lspconfig.gopls.setup {
+          capabilities = capabilities,
+          handlers = handlers,
+        }
+      end,
     }
   end,
 }
