@@ -163,8 +163,18 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
 
-  'rcarriga/nvim-notify',
-  { 'knubie/vim-kitty-navigator', build = 'cp ./*.py ~/.config/kitty/' },
+  {
+    'knubie/vim-kitty-navigator',
+    build = 'cp ./*.py ~/.config/kitty/',
+    config = function()
+      local km = vim.keymap
+      km.set('n', '<M-Up>', '<cmd>KittyNavigateUp<cr>')
+      km.set('n', '<M-Down>', '<cmd>KittyNavigateDown<cr>')
+      km.set('n', '<M-Left>', '<cmd>KittyNavigateLeft<cr>')
+      km.set('n', '<M-Right>', '<cmd>KittyNavigateRight<cr>')
+      -- km.set('n', '<M-up>', '<cmd>KittyNavigatePrevious<cr>')
+    end,
+  },
 
   -- Requires more readin:
   -- {
