@@ -20,6 +20,7 @@ return {
         javascript = { { 'prettierd', 'prettier' } },
         typescript = { { 'prettierd', 'prettier' } },
         vue = { { 'prettierd', 'prettier' } },
+        nix = { { 'alejandra' } },
       },
       format_on_save = function(bufnr)
         -- Disable with a global or buffer-local variable
