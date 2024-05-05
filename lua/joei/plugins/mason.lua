@@ -1,11 +1,16 @@
 return {
+  enabled = true,
   'williamboman/mason.nvim',
   dependencies = {
+    'folke/neodev.nvim',
+    'folke/neoconf.nvim',
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'jay-babu/mason-nvim-dap.nvim',
   },
   config = function()
+    require('neodev').setup {}
+    require('neoconf').setup {}
     require('mason').setup {
       ui = {
         icons = {
@@ -25,6 +30,7 @@ return {
         -- "tailwindcss",
         'lua_ls',
         'rust_analyzer',
+        'gopls',
       },
       automatic_installation = true, -- not the same as ensure_installed
     }
@@ -94,7 +100,7 @@ return {
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         }
