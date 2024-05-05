@@ -34,7 +34,7 @@ return {
 
   'tpope/vim-fugitive',
   'tpope/vim-obsession',
-  'tpope/vim-unimpaired',
+  -- 'tpope/vim-unimpaired',
   'tpope/vim-repeat',
 
   {
