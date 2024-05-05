@@ -1,4 +1,5 @@
 return {
+  enabled = true,
   'hrsh7th/nvim-cmp',
   event = { 'InsertEnter', 'CmdlineEnter' },
   dependencies = {
@@ -12,38 +13,12 @@ return {
     'hrsh7th/cmp-nvim-lsp-signature-help',
     'petertriho/cmp-git',
     'onsails/lspkind-nvim',
-    {
-      'L3MON4D3/LuaSnip',
-      build = 'make install_jsregexp',
-    },
+    'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
   },
   config = function()
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
-    local p = vim.fn.stdpath 'config' .. '/LuaSnip/'
-    luasnip.filetype_extend('vue', { 'typescript' })
-    require('luasnip.loaders.from_lua').lazy_load { paths = p }
-
-    local has_words_before = function()
-      unpack = unpack or table.unpack
-      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
-    end
-
-    vim.keymap.set('n', '<leader>sr', function()
-      require('luasnip.loaders.from_lua').load { paths = p }
-      print 'Reload snippets'
-    end, { desc = 'Reload snippets' })
-    vim.keymap.set('n', '<leader>se', function()
-      require('luasnip.loaders').edit_snippet_files()
-    end, { desc = 'Edit snippets' })
-
-    -- vim.keymap.set({ 'i' }, '<c-l>', function()
-    --   if ls.choice_active() then
-    --     ls.change_choice(1)
-    --   end
-    -- end, { silent = true })
 
     cmp.setup {
       mapping = cmp.mapping.preset.insert {
@@ -55,14 +30,20 @@ return {
         ['<C-n>'] = cmp.mapping.select_next_item(),
         ['<C-y>'] = cmp.mapping.confirm { select = true },
         ['<CR>'] = cmp.mapping.confirm { select = true },
-        ['<C-l>'] = cmp.mapping(function()
+        ['<S-CR>'] = cmp.mapping.confirm { select = false },
+        ['<C-k>'] = cmp.mapping(function()
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
           end
         end, { 'i', 's' }),
-        ['<C-h>'] = cmp.mapping(function()
+        ['<C-j>'] = cmp.mapping(function()
           if luasnip.locally_jumpable(-1) then
             luasnip.jump(-1)
+          end
+        end, { 'i', 's' }),
+        ['<C-l>'] = cmp.mapping(function()
+          if luasnip.choice_active() then
+            luasnip.change_choice(1)
           end
         end, { 'i', 's' }),
       },
@@ -100,6 +81,10 @@ return {
     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
     cmp.setup.cmdline(':', {
       mapping = cmp.mapping.preset.cmdline(),
+      --   ['<C-CR>'] = cmp.mapping.confirm { select = true },
+      --   ['<CR>'] = cmp.mapping.confirm { select = false },
+      -- ['<Tab>'] = cmp.mapping.preset.
+      -- },
       sources = cmp.config.sources {
         { name = 'path' },
         { name = 'cmdline' },
