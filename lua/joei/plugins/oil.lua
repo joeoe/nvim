@@ -27,8 +27,8 @@ return {
       show_hidden = true,
       columns = {
         'icon',
-        -- 'size',
-        -- 'mtime',
+        'size',
+        'mtime',
       },
     }
   end,
