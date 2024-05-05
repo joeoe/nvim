@@ -1,5 +1,6 @@
 return {
   {
+    enabled = false,
     'f-person/auto-dark-mode.nvim',
     lazy = false,
     priority = 9999,
