@@ -19,6 +19,7 @@ return {
         python = { 'isort', 'black' },
         javascript = { { 'prettierd', 'prettier' } },
         typescript = { { 'prettierd', 'prettier' } },
+        go = { 'gofmt' },
         vue = { { 'prettierd', 'prettier' } },
         nix = { { 'alejandra' } },
       },
