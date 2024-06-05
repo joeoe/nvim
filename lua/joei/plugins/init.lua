@@ -13,8 +13,8 @@ return {
     priority = 1000,
     config = function()
       require('catppuccin').setup {
-        flavour = 'mocha',
-        transparent_background = false,
+        -- flavour = 'mocha',
+        transparent_background = true,
         term_colors = true,
         integrations = {
           leap = true,
@@ -27,10 +27,50 @@ return {
         },
         compile_path = vim.fn.stdpath 'cache' .. '/catppuccin',
       }
-      vim.cmd.colorscheme 'catppuccin-mocha'
+      vim.cmd.colorscheme 'catppuccin'
     end,
   },
-  { 'rose-pine/neovim', name = 'rose-pine' },
+  {
+    'rose-pine/neovim',
+    priority = 9999,
+    name = 'rose-pine',
+    config = function()
+      require('rose-pine').setup {
+        -- highlight_groups = {
+        --   TelescopeBorder = { fg = 'highlight_high', bg = 'none' },
+        --   TelescopeNormal = { bg = 'none' },
+        --   TelescopePromptNormal = { bg = 'base' },
+        --   TelescopeResultsNormal = { fg = 'subtle', bg = 'none' },
+        --   TelescopeSelection = { fg = 'text', bg = 'base' },
+        --   TelescopeSelectionCaret = { fg = 'rose', bg = 'rose' },
+        -- },
+        highlight_groups = {
+          TelescopeBorder = { fg = 'overlay', bg = 'overlay' },
+          TelescopeNormal = { fg = 'subtle', bg = 'overlay' },
+          TelescopeSelection = { fg = 'text', bg = 'highlight_med' },
+          TelescopeSelectionCaret = { fg = 'love', bg = 'highlight_med' },
+          TelescopeMultiSelection = { fg = 'text', bg = 'highlight_high' },
+
+          TelescopeTitle = { fg = 'base', bg = 'love' },
+          TelescopePromptTitle = { fg = 'base', bg = 'pine' },
+          TelescopePreviewTitle = { fg = 'base', bg = 'iris' },
+
+          TelescopePromptNormal = { fg = 'text', bg = 'surface' },
+          TelescopePromptBorder = { fg = 'surface', bg = 'surface' },
+        },
+        -- vim.cmd.colorscheme 'rose-pine',
+      }
+    end,
+  },
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+      -- vim.cmd.colorscheme 'tokyonight'
+    end,
+  },
 
   'tpope/vim-fugitive',
   'tpope/vim-obsession',
