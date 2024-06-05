@@ -155,13 +155,42 @@ return {
       }
     end,
   },
-
   -- "luckasRanarison/tree-sitter-hypr",
   'elkowar/yuck.vim',
   { -- better quickfix
     'kevinhwang91/nvim-bqf',
     ft = 'qf',
   },
+  {
+    'ray-x/go.nvim',
+    dependencies = { -- optional packages
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      require('go').setup()
+    end,
+    event = { 'CmdlineEnter' },
+    ft = { 'go', 'gomod' },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  },
+  -- {
+  --   'olexsmir/gopher.nvim',
+  --   ft = 'go',
+  --   config = function()
+  --     require('gopher').setup {
+  --       goimports = true,
+  --       gofmt = true,
+  --       max_line_len = 120,
+  --       tags = 'json',
+  --       verbose = false,
+  --     }
+  --   end,
+  --   build = function()
+  --     vim.cmd 'silent! GoInstallDeps'
+  --   end,
+  -- },
   {
     'ellisonleao/glow.nvim',
     config = function()
@@ -206,6 +235,8 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
 
+  'ron-rs/ron.vim',
+
   {
     'knubie/vim-kitty-navigator',
     build = 'cp ./*.py ~/.config/kitty/',
@@ -218,7 +249,30 @@ return {
       -- km.set('n', '<M-up>', '<cmd>KittyNavigatePrevious<cr>')
     end,
   },
-  'ActivityWatch/aw-watcher-vim',
+  -- 'ActivityWatch/aw-watcher-vim',
+
+  -- {
+  --   'rmagatti/auto-session',
+  --   config = function()
+  --     require('auto-session').setup {
+  --       log_level = 'error',
+  --       auto_session_enabled = true,
+  --       auto_session_last_session_dir = vim.fn.stdpath 'data' .. '/sessions/',
+  --       auto_restore_enabled = true,
+  --       auto_session_enable_last_session = true,
+  --       auto_session_root_dir = vim.fn.stdpath 'data' .. '/sessions/',
+  --       session_lens = {
+  --         buftypes_to_ignore = {},
+  --         load_on_setup = true,
+  --         theme_conf = {
+  --           border = true,
+  --         },
+  --         previewer = false,
+  --       },
+  --       vim.keymap.set('n', '<leader>sl', require('auto-session.session-lens').search_session, { noremap = true, silent = true }),
+  --     }
+  --   end,
+  -- },
 
   -- Requires more readin:
   -- {
