@@ -11,7 +11,7 @@ opt.foldlevelstart = 99
 opt.number = true
 opt.relativenumber = true
 
-opt.updatetime = 250
+opt.updatetime = 50
 opt.timeoutlen = 400
 
 -- fuzzy find
@@ -31,21 +31,25 @@ opt.wildignore:append '.doc,*.pdf,*.cbr,*.cbz'
 opt.wildignore:append '.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz,*.kgb'
 opt.wildignore:append '.swp,.lock,.DS_Store,._*'
 opt.pumblend = 15 -- pop up menu transparency
+
 -- case insensitive search
 opt.ignorecase = true
 opt.smartcase = true
 opt.infercase = true
+
 -- Make backspace behave in a sane manner
 opt.backspace = 'indent,eol,start'
+
 -- Searching
 opt.hlsearch = true
 opt.incsearch = true
 opt.inccommand = 'split' -- shows results of some commands like substitute
+
 -- Tabs
-opt.shiftwidth = 2
+opt.shiftwidth = 4
 opt.expandtab = true
-opt.tabstop = 2
-opt.softtabstop = 2
+opt.tabstop = 4
+opt.softtabstop = 4
 
 opt.autoindent = true
 opt.splitright = true
