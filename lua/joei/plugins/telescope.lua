@@ -6,6 +6,7 @@ return {
     'nvim-lua/plenary.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     'nvim-telescope/telescope-ui-select.nvim',
+    'nvim-telescope/telescope-live-grep-args.nvim',
     'MunifTanjim/nui.nvim',
   },
   config = function()
@@ -15,13 +16,15 @@ return {
     local builtin = require 'telescope.builtin'
     local actions = require 'telescope.actions'
     local TSLayout = require 'telescope.pickers.layout'
+    local lga_actions = require 'telescope-live-grep-args.actions'
 
     telescope.load_extension 'fzf'
     telescope.load_extension 'ui-select'
 
-    vim.keymap.set('n', '<leader>tf', builtin.find_files, { desc = '[T]elescope [F]iles' })
+    vim.keymap.set('n', '<leader>f', builtin.find_files, { desc = '[T]elescope [F]iles' })
     vim.keymap.set('n', '<leader>to', builtin.oldfiles, { desc = '[T]elescope File history' })
     vim.keymap.set('n', '<leader>tg', builtin.live_grep, { desc = '[T]elescope [G]rep' })
+    vim.keymap.set('n', '<leader>ta', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
     vim.keymap.set('n', '<leader>tG', function()
       builtin.live_grep { search_dirs = { '%:p:h' } }
     end, { desc = 'Grep in current directory' })
@@ -53,7 +56,7 @@ return {
         mappings = {
           i = {
             -- Skip normal mode in telescope
-            ['<esc>'] = actions.close,
+            -- ['<esc>'] = actions.close,
             -- ['<C-j>'] = actions.move_selection_next,
             -- ['<C-k>'] = actions.move_selection_previous,
             ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
@@ -274,11 +277,21 @@ return {
         -- return TSLayout(layout)
         -- end,
       },
-      -- extensions = {
-      --   ['ui-select'] = {
-      --     require('telescope.themes').get_dropdown(),
-      --   },
-      -- },
+      extensions = {
+        --   ['ui-select'] = {
+        --     require('telescope.themes').get_dropdown(),
+        --   },
+        live_grep_args = {
+          mappings = { -- extend mappings
+            i = {
+              ['<C-k>'] = lga_actions.quote_prompt(),
+              ['<C-i>'] = lga_actions.quote_prompt { postfix = ' --iglob ' },
+              -- freeze the current list and start a fuzzy search in the frozen list
+              ['<C-space>'] = actions.to_fuzzy_refine,
+            },
+          },
+        },
+      },
     }
   end,
 }
