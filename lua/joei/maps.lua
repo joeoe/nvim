@@ -33,7 +33,7 @@ km.set('n', '<leader>bo', '<cmd>%bd|e#|bd#<cr>', { desc = 'Delete ALL buffers ex
 km.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
 km.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
 km.set('n', '<leader>em', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-km.set('n', '<leader>ll', vim.diagnostic.setloclist, { desc = 'Open diagnostic [L]oclist' })
+km.set('n', '<leader>dL', vim.diagnostic.setloclist, { desc = 'Open diagnostic [L]oclist' })
 
 -- Add lines above or below cursor in insert mode
 km.set('i', '<s-cr>', '<c-o>o')
