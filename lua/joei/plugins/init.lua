@@ -14,7 +14,7 @@ return {
     config = function()
       require('catppuccin').setup {
         -- flavour = 'mocha',
-        transparent_background = true,
+        -- transparent_background = true,
         term_colors = true,
         integrations = {
           leap = true,
@@ -251,6 +251,7 @@ return {
   },
   -- 'ActivityWatch/aw-watcher-vim',
 
+  'mbbill/undotree',
   -- {
   --   'rmagatti/auto-session',
   --   config = function()
